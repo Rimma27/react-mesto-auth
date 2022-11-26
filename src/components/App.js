@@ -74,15 +74,15 @@ function App() {
     const cbRegister = useCallback(async (email, password) => {
         try {
             const data = await authApi.register(email, password);
+            cbAuthenticate(data);
             setIsRegisterSuccess(true);
             setIsLoginError(false);
-            await cbLogin(email, password);
             return data;
         } catch (err) {
             console.log(err);
             setIsRegisterSuccess(false);
         }
-    }, [cbLogin])
+    }, [cbAuthenticate])
 
     const cbLogOut = useCallback(() => {
         localStorage.clear();
