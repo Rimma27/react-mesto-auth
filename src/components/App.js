@@ -55,26 +55,10 @@ function App() {
         tokenCheck()
     }, [tokenCheck, loggedIn])
 
-    const cbLogin = useCallback(async (email, password) => {
-        try {
-            const data = await authApi.login(email, password);
-            if (!data) {
-                throw new Error('Неверный email или пароль пользователя')
-            }
-            if (data.token) {
-                await cbAuthenticate(data);
-                return data;
-            }
-        } catch (err) {
-            console.log(err);
-            setIsLoginError(true);
-        }
-    }, [cbAuthenticate])
-
     const cbRegister = useCallback(async (email, password) => {
         try {
             const data = await authApi.register(email, password);
-            cbAuthenticate(data);
+            await cbAuthenticate(data);
             setIsRegisterSuccess(true);
             setIsLoginError(false);
             return data;
@@ -84,9 +68,29 @@ function App() {
         }
     }, [cbAuthenticate])
 
+    const cbLogin = useCallback(async (email, password) => {
+        try {
+            const data = await authApi.login(email, password);
+            if (!data) {
+                throw new Error('Неверный email или пароль пользователя')
+            }
+            if (data.token) {
+                await cbAuthenticate(data);
+                setIsRegisterSuccess(false);
+                setIsLoginError(false);
+                return data;
+            }
+        } catch (err) {
+            console.log(err);
+            setIsLoginError(true);
+        }
+    }, [cbAuthenticate, cbRegister])
+
     const cbLogOut = useCallback(() => {
         localStorage.clear();
         setLoggedIn(false);
+        setIsRegisterSuccess(false);
+        setIsLoginError(false);
     }, [])
 
     const handleInfotoolClick = () => {
