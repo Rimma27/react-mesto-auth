@@ -1,0 +1,9 @@
+.auth {
+    margin: 60px auto 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 358px;
+    height: 429px;
+    background-color: black;
+}

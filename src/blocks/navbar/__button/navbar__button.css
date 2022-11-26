@@ -1,0 +1,11 @@
+.navbar__button{
+    border: none;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #A9A9A9;
+    list-style-type: none;
+    background-color: black;
+    cursor: pointer;
+}

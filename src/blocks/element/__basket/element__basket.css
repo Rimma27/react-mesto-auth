@@ -1,0 +1,17 @@
+.element__basket {
+    visibility: hidden;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 18px;
+    height: 19px;
+    z-index: 2;
+    background-image: url(../../../images/Group.svg);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.element__basket:hover {
+    opacity: 50%;
+}

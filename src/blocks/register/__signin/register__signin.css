@@ -1,0 +1,6 @@
+.register__signin {
+    display: flex;
+    width: 358px;
+    justify-content: center;
+    margin: 15px auto 0;
+}

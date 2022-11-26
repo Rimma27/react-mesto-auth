@@ -1,0 +1,12 @@
+.register__signin-title {
+    margin: 0 5px 0 0;
+    text-align: end;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16.94px;
+    color: #CCCCCC;
+}
