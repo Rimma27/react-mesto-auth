@@ -58,7 +58,6 @@ function App() {
     const cbRegister = useCallback(async (email, password) => {
         try {
             const data = await authApi.register(email, password);
-            await cbAuthenticate(data);
             setIsRegisterSuccess(true);
             setIsLoginError(false);
             return data;
@@ -84,7 +83,7 @@ function App() {
             console.log(err);
             setIsLoginError(true);
         }
-    }, [cbAuthenticate, cbRegister])
+    }, [cbAuthenticate])
 
     const cbLogOut = useCallback(() => {
         localStorage.clear();
@@ -187,8 +186,8 @@ function App() {
                             onCardDelete={handleCardDelete} />
 
                         <Route path="/sign-up">
-                            <Register isLoggedIn={loggedIn} onRegister={cbRegister} isRegisterSuccess={isRegisterSuccess} isLoginError={isLoginError}
-                                onClick={handleInfotoolClick} isOpen={isInfotoolPopupOpen} onClose={closeAllPopups} />
+                            <Register onRegister={cbRegister} isRegisterSuccess={isRegisterSuccess} isLoginError={isLoginError}
+                                onClick={handleInfotoolClick} isOpen={isInfotoolPopupOpen} onClose={closeAllPopups} toLogin={cbLogin}/>
                         </Route>
                         <Route path="/sign-in">
                             <Login onLogin={cbLogin} isRegisterSuccess={isRegisterSuccess} isLoginError={isLoginError}

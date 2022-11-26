@@ -1,10 +1,9 @@
 import { useState } from "react";
 import AuthForm from "./AuthForm";
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import InfoTooltip from "./InfoTooltip";
 
-function Register({isLoggedIn, onRegister, isOpen, onClose, onClick, isRegisterSuccess, isLoginError}) {
-    const history = useHistory();
+function Register({onRegister, isOpen, onClose, onClick, isRegisterSuccess, isLoginError, toLogin}) {
     const [userData, setUserData] = useState({
         email: '',
         password: ''
@@ -20,11 +19,12 @@ function Register({isLoggedIn, onRegister, isOpen, onClose, onClick, isRegisterS
    
     function handleSubmit(e) {
         e.preventDefault();
-        onRegister(userData.email, userData.password)
+        onRegister(userData.email, userData.password);
     }
 
-    if (isLoggedIn) {
-        history.push('/sign-in')
+    function onInfotooltipClose(){
+        onClose();
+        toLogin(userData.email, userData.password);
     }
 
     return (
@@ -35,7 +35,7 @@ function Register({isLoggedIn, onRegister, isOpen, onClose, onClick, isRegisterS
                 <p className="register__signin-title">Уже зарегистрированы?</p>
                 <Link to="/sign-in" className="register__login-link">Войти</Link>
             </div>
-            <InfoTooltip isOpen={isOpen} onClose={onClose} isRegisterSuccess={isRegisterSuccess} isLoginError={isLoginError} />
+            <InfoTooltip isOpen={isOpen} onClose={onInfotooltipClose} isRegisterSuccess={isRegisterSuccess} isLoginError={isLoginError} />
         </>
     )
 }
