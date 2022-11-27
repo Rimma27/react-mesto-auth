@@ -2,7 +2,6 @@ import { useState } from "react";
 import AuthForm from "./AuthForm.js";
 import InfoTooltip from "./InfoTooltip.js";
 
-
 function Login({ onLogin, isOpen, onClose, onClick, isRegisterSuccess, isLoginError }) {
     const [userData, setUserData] = useState({
         email: '',
@@ -29,7 +28,7 @@ function Login({ onLogin, isOpen, onClose, onClick, isRegisterSuccess, isLoginEr
         <>
             <AuthForm title={'Вход'} valueEmail={userData.email} valuePassword={userData.password} submitTitle={'Войти'}
                 onChange={handleChange} onSubmit={handleSubmit} onClick={onClick} />
-            <InfoTooltip isOpen={isOpen} onClose={onClose} isRegisterSuccess={isRegisterSuccess} isLoginError={isLoginError} />
+            <InfoTooltip isOpen={isOpen} onErrorClose={onClose} isRegisterSuccess={isRegisterSuccess} isLoginError={isLoginError} />
         </>
     )
 }

@@ -26,7 +26,13 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
     }
 
     return (
-        <PopupWithForm name={'add'} title={'Новое место'} isOpen={isOpen} onClose={onClose} submitTitle={'Создать'} onSubmit={handleAddPlaceSubmit}>
+        <PopupWithForm 
+        name={'add'} 
+        title={'Новое место'} 
+        isOpen={isOpen} 
+        onClose={onClose} 
+        submitTitle={'Создать'} 
+        onSubmit={handleAddPlaceSubmit}>
             <label>
                 <input onChange={handleChangeName} value={name} type="text" id="title-item" name="name" className="popup__item popup__item_type_title"
                     placeholder="Название" minLength="2" maxLength="30" required />

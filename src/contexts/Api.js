@@ -39,7 +39,7 @@ class Api {
         headers: this._headers,
         body: JSON.stringify({
           name: userinfo.name,
-          about:  userinfo.about
+          about: userinfo.about
         })
       })
       .then(this._onResponce)
@@ -117,9 +117,9 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-51/',
-  headers: {
+    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-51/',
+    headers: {
     authorization: '9c349439-3a63-4974-81ef-898d0370b2c4',
     'Content-Type': 'application/json'
-  }
-})
+    }
+  })

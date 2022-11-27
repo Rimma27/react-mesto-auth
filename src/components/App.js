@@ -33,9 +33,9 @@ function App() {
         setLoggedIn(true);
     }, [])
 
-    const tokenCheck = useCallback(async () => {
+    const checkToken = useCallback(async () => {
         try {
-            let jwt = localStorage.getItem('jwt');
+            const jwt = localStorage.getItem('jwt');
             if (!jwt) {
                 throw new Error('no token')
             }
@@ -43,7 +43,6 @@ function App() {
             if (!user.data) {
                 throw new Error('invalid user')
             }
-            setUserEmail(user.data.email);
             setLoggedIn(true);
 
         } catch (err) {
@@ -52,18 +51,20 @@ function App() {
     }, [])
 
     useEffect(() => {
-        tokenCheck()
-    }, [tokenCheck, loggedIn])
+        checkToken()
+    }, [])
 
     const cbRegister = useCallback(async (email, password) => {
         try {
             const data = await authApi.register(email, password);
+            setUserEmail(email);
             setIsRegisterSuccess(true);
             setIsLoginError(false);
             return data;
         } catch (err) {
             console.log(err);
             setIsRegisterSuccess(false);
+            setIsLoginError(true);
         }
     }, [cbAuthenticate])
 
@@ -75,6 +76,7 @@ function App() {
             }
             if (data.token) {
                 await cbAuthenticate(data);
+                setUserEmail(email);
                 setIsRegisterSuccess(false);
                 setIsLoginError(false);
                 return data;
@@ -97,6 +99,9 @@ function App() {
     }
 
     useEffect(() => {
+        if (!loggedIn){
+            return;
+        }
         api.getInitialCards(cards)
             .then((data) => {
                 const cards = data;
@@ -108,7 +113,8 @@ function App() {
                 setCurrentUser(data);
             })
             .catch(err => console.log('Ошибка', err));
-    }, [])
+    }, [loggedIn])
+
     function handleCardLike(card) {
         const isLiked = card.likes.some(i => i._id === currentUser._id);
         api.setCardLike(card._id, isLiked)
@@ -186,12 +192,24 @@ function App() {
                             onCardDelete={handleCardDelete} />
 
                         <Route path="/sign-up">
-                            <Register onRegister={cbRegister} isRegisterSuccess={isRegisterSuccess} isLoginError={isLoginError}
-                                onClick={handleInfotoolClick} isOpen={isInfotoolPopupOpen} onClose={closeAllPopups} toLogin={cbLogin}/>
+                            <Register 
+                            onRegister={cbRegister} 
+                            isRegisterSuccess={isRegisterSuccess} 
+                            isLoginError={isLoginError}
+                            onClick={handleInfotoolClick} 
+                            isOpen={isInfotoolPopupOpen} 
+                            onClose={closeAllPopups} 
+                            toLogin={cbLogin} />
                         </Route>
+                        
                         <Route path="/sign-in">
-                            <Login onLogin={cbLogin} isRegisterSuccess={isRegisterSuccess} isLoginError={isLoginError}
-                                onClick={handleInfotoolClick} isOpen={isInfotoolPopupOpen} onClose={closeAllPopups} />
+                            <Login 
+                            onLogin={cbLogin} 
+                            isRegisterSuccess={isRegisterSuccess} 
+                            isLoginError={isLoginError}
+                            onClick={handleInfotoolClick} 
+                            isOpen={isInfotoolPopupOpen} 
+                            onClose={closeAllPopups} />
                         </Route>
                     </Switch>
                     <Route path="*">

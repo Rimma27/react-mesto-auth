@@ -2,7 +2,7 @@ import React from "react";
 import logo from '../images/success.svg';
 import logos from '../images/error.svg';
 
-function InfoTooltip({ isOpen, onClose, isRegisterSuccess, isLoginError }) {
+function InfoTooltip({ isOpen, onClose, isRegisterSuccess, isLoginError, onErrorClose }) {
     return (
         <>
             {isRegisterSuccess && (<>
@@ -19,7 +19,7 @@ function InfoTooltip({ isOpen, onClose, isRegisterSuccess, isLoginError }) {
                 <div className="popup__container">
                     <img src={logos} className="auth-popup__logo" alt="Error" />
                     <h2 className="auth-popup__title">Что-то пошло не так! Попробуйте ещё раз.</h2>
-                    <button onClick={onClose} type="button" className="popup__button_type_close"></button>
+                    <button onClick={onErrorClose} type="button" className="popup__button_type_close"></button>
                 </div>
             </div>
             )

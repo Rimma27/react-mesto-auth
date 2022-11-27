@@ -21,6 +21,9 @@ function Register({onRegister, isOpen, onClose, onClick, isRegisterSuccess, isLo
         e.preventDefault();
         onRegister(userData.email, userData.password);
     }
+    function onErrorTooltipClose() {
+        onClose();
+    }
 
     function onInfotooltipClose(){
         onClose();
@@ -29,13 +32,24 @@ function Register({onRegister, isOpen, onClose, onClick, isRegisterSuccess, isLo
 
     return (
         <>
-            <AuthForm title={'Регистрация'} valueEmail={userData.email} valuePassword={userData.password} submitTitle={'Зарегистрироваться'}
-                onChange={handleChange} onSubmit={handleSubmit} onClick={onClick}/>
+            <AuthForm 
+            title={'Регистрация'} 
+            valueEmail={userData.email} 
+            valuePassword={userData.password} 
+            submitTitle={'Зарегистрироваться'}
+            onChange={handleChange} 
+            onSubmit={handleSubmit} 
+            onClick={onClick}/>
             <div className="register__signin">
                 <p className="register__signin-title">Уже зарегистрированы?</p>
                 <Link to="/sign-in" className="register__login-link">Войти</Link>
             </div>
-            <InfoTooltip isOpen={isOpen} onClose={onInfotooltipClose} isRegisterSuccess={isRegisterSuccess} isLoginError={isLoginError} />
+            <InfoTooltip 
+            isOpen={isOpen} 
+            onClose={onInfotooltipClose} 
+            isRegisterSuccess={isRegisterSuccess} 
+            isLoginError={isLoginError}
+            onErrorClose={onErrorTooltipClose} />
         </>
     )
 }
