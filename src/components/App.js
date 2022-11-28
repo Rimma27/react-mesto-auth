@@ -13,6 +13,7 @@ import Login from './Login';
 import Register from './Register';
 import ProtectedRoute from './ProtectedRoute';
 import { authApi } from '../contexts/AuthApi';
+import InfoTooltip from './InfoTooltip';
 
 function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -23,10 +24,11 @@ function App() {
     const [currentUser, setCurrentUser] = useState({});
     const [cards, setCards] = useState([]);
     const [loggedIn, setLoggedIn] = useState(false);
-    const [userEmail, setUserEmail] = useState('');
     const [isInfotoolPopupOpen, setIsInfotoolPopupOpen] = useState(false);
     const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
     const [isLoginError, setIsLoginError] = useState(false);
+    const [userEmail, setUserEmail] = useState('');
+    const [userPassword, setUserPassword] = useState('');
 
     const cbAuthenticate = useCallback((data) => {
         localStorage.setItem('jwt', data.token);
@@ -43,6 +45,7 @@ function App() {
             if (!user.data) {
                 throw new Error('invalid user')
             }
+            setUserEmail(user.data.email);
             setLoggedIn(true);
 
         } catch (err) {
@@ -58,6 +61,7 @@ function App() {
         try {
             const data = await authApi.register(email, password);
             setUserEmail(email);
+            setUserPassword(password);
             setIsRegisterSuccess(true);
             setIsLoginError(false);
             return data;
@@ -76,9 +80,9 @@ function App() {
             }
             if (data.token) {
                 await cbAuthenticate(data);
-                setUserEmail(email);
                 setIsRegisterSuccess(false);
                 setIsLoginError(false);
+                setUserEmail(email);
                 return data;
             }
         } catch (err) {
@@ -99,7 +103,7 @@ function App() {
     }
 
     useEffect(() => {
-        if (!loggedIn){
+        if (!loggedIn) {
             return;
         }
         api.getInitialCards(cards)
@@ -176,6 +180,10 @@ function App() {
             .catch(err => console.log('Ошибка при добавлении карточки', err));
     }
 
+    function onInfotooltipClose() {
+        closeAllPopups();
+        cbLogin(userEmail, userPassword);
+    }
     return (
         <div className='body'>
             <div className='page'>
@@ -192,30 +200,30 @@ function App() {
                             onCardDelete={handleCardDelete} />
 
                         <Route path="/sign-up">
-                            <Register 
-                            onRegister={cbRegister} 
-                            isRegisterSuccess={isRegisterSuccess} 
-                            isLoginError={isLoginError}
-                            onClick={handleInfotoolClick} 
-                            isOpen={isInfotoolPopupOpen} 
-                            onClose={closeAllPopups} 
-                            toLogin={cbLogin} />
+                            <Register
+                                onRegister={cbRegister}
+                                onClick={handleInfotoolClick}
+                            />
                         </Route>
-                        
+
                         <Route path="/sign-in">
-                            <Login 
-                            onLogin={cbLogin} 
-                            isRegisterSuccess={isRegisterSuccess} 
-                            isLoginError={isLoginError}
-                            onClick={handleInfotoolClick} 
-                            isOpen={isInfotoolPopupOpen} 
-                            onClose={closeAllPopups} />
+                            <Login
+                                onLogin={cbLogin}
+                                onClick={handleInfotoolClick}
+                            />
                         </Route>
                     </Switch>
                     <Route path="*">
                         {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
                     </Route>
                     <Footer />
+                    <InfoTooltip
+                        isOpen={isInfotoolPopupOpen}
+                        onClose={onInfotooltipClose}
+                        isRegisterSuccess={isRegisterSuccess}
+                        isLoginError={isLoginError}
+                        onErrorClose={closeAllPopups} />
+
                     <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
                     <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
                     <AddPlacePopup onAddPlace={handleAddPlace} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />

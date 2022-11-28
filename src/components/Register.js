@@ -1,9 +1,9 @@
-import { useState } from "react";
 import AuthForm from "./AuthForm";
 import { Link } from 'react-router-dom';
-import InfoTooltip from "./InfoTooltip";
+import { useState } from "react";
 
-function Register({onRegister, isOpen, onClose, onClick, isRegisterSuccess, isLoginError, toLogin}) {
+function Register({ onRegister, onClick }) {
+   
     const [userData, setUserData] = useState({
         email: '',
         password: ''
@@ -21,14 +21,6 @@ function Register({onRegister, isOpen, onClose, onClick, isRegisterSuccess, isLo
         e.preventDefault();
         onRegister(userData.email, userData.password);
     }
-    function onErrorTooltipClose() {
-        onClose();
-    }
-
-    function onInfotooltipClose(){
-        onClose();
-        toLogin(userData.email, userData.password);
-    }
 
     return (
         <>
@@ -44,12 +36,6 @@ function Register({onRegister, isOpen, onClose, onClick, isRegisterSuccess, isLo
                 <p className="register__signin-title">Уже зарегистрированы?</p>
                 <Link to="/sign-in" className="register__login-link">Войти</Link>
             </div>
-            <InfoTooltip 
-            isOpen={isOpen} 
-            onClose={onInfotooltipClose} 
-            isRegisterSuccess={isRegisterSuccess} 
-            isLoginError={isLoginError}
-            onErrorClose={onErrorTooltipClose} />
         </>
     )
 }
